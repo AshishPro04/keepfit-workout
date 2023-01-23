@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">KeepFit Workout</string>
+    <string name="workouts_heading">Workouts</string>
+    <string name="seven_minute">7 Minute Workout</string>
+    <string name="abs_workout">Abs workout</string>
+    <string name="jumping_jacks">Jumping Jacks</string>
+    <string name="wall_sit">Wall Sit</string>
+    <string name="push_ups">Push Ups</string>
+    <string name="crunches">Crunches</string>
+    <string name="squats">Squats</string>
+    <string name="tricep_dips">Tricep Dips</string>
+    <string name="plank">Plank</string>
+    <string name="side_plank_left">Side Plank (left side)</string>
+    <string name="side_plank_right">Side Plank (right side)</string>
+    <string name="running_in_place">Running in Place</string>
+    <string name="step_ups">Step Ups</string>
+    <string name="push_up_with_rotation_left">Push Up with Rotation (left side)</string>
+    <string name="push_up_with_rotation_right">Push Up with Rotation (right side)</string>
+    <string name="lunges">Linges</string>
+    <string name="duration_label">Duration: %1$s</string>
+    <string name="start_workout">Start Workout</string>
+    <string name="stop_workout">Stop Workout</string>
+    <string name="resume_workout">Resume Workout</string>
+    <string name="pause_workout">Pause Workout</string>
+    <string name="finish_workout">Finish Workout</string>
+</resources>
