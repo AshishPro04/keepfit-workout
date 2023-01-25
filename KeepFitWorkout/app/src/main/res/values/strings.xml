@@ -23,4 +23,7 @@
     <string name="resume_workout">Resume Workout</string>
     <string name="pause_workout">Pause Workout</string>
     <string name="finish_workout">Finish Workout</string>
+    <string name="leg_raises">Leg raises</string>
+    <string name="super_man">Super man</string>
+    <string name="mountain_climbs">Mountain climbs</string>
 </resources>

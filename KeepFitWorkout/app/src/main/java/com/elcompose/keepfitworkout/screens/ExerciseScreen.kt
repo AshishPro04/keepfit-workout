@@ -2,9 +2,12 @@ package com.elcompose.keepfitworkout.screens
 
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -16,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.elcompose.keepfitworkout.R
 import com.elcompose.keepfitworkout.ui.theme.KeepFitWorkoutTheme
 import com.elcompose.keepfitworkout.util.WorkoutState
@@ -49,12 +53,7 @@ fun ExerciseTimer(
         color = MaterialTheme.colorScheme.primaryContainer
     ) {
         Column() {
-            Spacer(modifier = Modifier
-                .fillMaxWidth(progress)
-                .height(4.dp)
-                .background(color = MaterialTheme.colorScheme.onPrimaryContainer)
-                .padding(horizontal = 8.dp)
-            )
+            ProgressIndicator(progress)
             Row(
                 modifier = Modifier
                     .padding(all = 8.dp)
@@ -62,85 +61,113 @@ fun ExerciseTimer(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                Text(
-                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
-                    text = timeLeft.toString(),
-                    style = MaterialTheme.typography.headlineMedium
-                )
+                RemainingTime(timeLeft)
+
                 Column(
                     modifier = Modifier.padding(8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Button(
-                        modifier = Modifier.padding(all = 8.dp).width(200.dp),
-                        onClick = onFinishWorkout
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .padding(all = 8.dp).width(200.dp).
-                                fillMaxWidth(1f).
-                                wrapContentWidth(),
-                            text = stringResource(id = R.string.finish_workout),
-                            style = MaterialTheme.typography.titleSmall
-                        )
-                    }
-                    Button(
-                        modifier = Modifier.padding(all = 8.dp).width(200.dp),
-                        onClick = onPlayPause
-                    ) {
-                        PlayButtonContents(workoutState = workoutState)
-                    }
+                    FinishButton(onFinishWorkout)
+                    PlayButton(onPlayPause, workoutState)
                 }
             }
         }
     }
 }
 
+
+
+@Composable
+private fun PlayButton(
+    onPlayPause: () -> Unit,
+    workoutState: WorkoutState
+) {
+    Button(
+        modifier = Modifier
+            .padding(all = 8.dp)
+            .width(200.dp),
+        onClick = onPlayPause
+    ) {
+        PlayButtonContents(workoutState = workoutState)
+    }
+}
+
+@Composable
+private fun FinishButton(onFinishWorkout: () -> Unit) {
+    Button(
+        modifier = Modifier
+            .padding(all = 8.dp)
+            .width(200.dp),
+        onClick = onFinishWorkout
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(all = 8.dp)
+                .width(200.dp)
+                .fillMaxWidth(1f)
+                .wrapContentWidth(),
+            text = stringResource(id = R.string.finish_workout),
+            style = MaterialTheme.typography.titleSmall
+        )
+    }
+}
+
+@Composable
+private fun RemainingTime(timeLeft: Int) {
+    Text(
+        modifier = Modifier
+            .padding(vertical = 8.dp, horizontal = 16.dp)
+            .wrapContentHeight(),
+        text = timeLeft.toString(),
+        style = MaterialTheme.typography.headlineLarge,
+        fontSize = 48.sp,
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
+private fun ProgressIndicator(progress: Float) {
+    Spacer(
+        modifier = Modifier
+            .fillMaxWidth(progress)
+            .height(4.dp)
+            .background(color = MaterialTheme.colorScheme.onPrimaryContainer)
+            .padding(horizontal = 8.dp)
+    )
+}
+
 @Composable
 fun PlayButtonContents(workoutState: WorkoutState) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        val btnTxtStyle = MaterialTheme.typography.titleSmall
-        val btnTxtModifier = Modifier.padding(all = 8.dp)
         when (workoutState) {
             WorkoutState.STARTED -> {
-                Icon(
-                    painter = painterResource(id = R.drawable.pause_icon),
-                    contentDescription = null
-                )
-                Text(
-                    modifier = btnTxtModifier,
-                    text = stringResource(id = R.string.pause_workout),
-                    style = btnTxtStyle,
-                    textAlign = TextAlign.Center
-                )
+                PlayButtonContent(iconId = R.drawable.pause_icon, stringId = R.string.pause_workout)
             }
             WorkoutState.PAUSED -> {
-                Icon(
-                    painter = painterResource(id = R.drawable.play_icon),
-                    contentDescription = null
-                )
-                Text(
-                    modifier = btnTxtModifier,
-                    text = stringResource(id = R.string.resume_workout),
-                    style = btnTxtStyle,
-                    textAlign = TextAlign.Center
-                )
+                PlayButtonContent(iconId = R.drawable.play_icon, stringId = R.string.resume_workout)
             }
             WorkoutState.STOPPED -> {
-                Icon(
-                    painter = painterResource(id = R.drawable.play_icon),
-                    contentDescription = null
-                )
-                Text(
-                    modifier = btnTxtModifier,
-                    text = stringResource(id = R.string.start_workout),
-                    style = btnTxtStyle,
-                    textAlign = TextAlign.Center
-                )
+                PlayButtonContent(iconId = R.drawable.play_icon, stringId = R.string.start_workout)
             }
         }
         
     }
+}
+
+@Composable
+fun PlayButtonContent(@DrawableRes iconId: Int, @StringRes stringId: Int){
+    val btnTxtStyle = MaterialTheme.typography.titleSmall
+    val btnTxtModifier = Modifier.padding(all = 8.dp)
+    Icon(
+        painter = painterResource(id = iconId),
+        contentDescription = null
+    )
+    Text(
+        modifier = btnTxtModifier,
+        text = stringResource(id = stringId),
+        style = btnTxtStyle,
+        textAlign = TextAlign.Center
+    )
 }
 
 @Composable

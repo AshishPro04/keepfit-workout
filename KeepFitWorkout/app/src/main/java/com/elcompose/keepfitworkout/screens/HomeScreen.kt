@@ -168,7 +168,6 @@ fun HomeScreen(workouts: List<Workout>, onStartWorkout: (Workout) -> Unit) {
 fun PreviewHomePage(){
     KeepFitWorkoutTheme {
         HomeScreen(listOf()){
-
         }
     }
 }
