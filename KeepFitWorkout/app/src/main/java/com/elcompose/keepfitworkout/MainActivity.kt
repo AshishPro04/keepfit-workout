@@ -18,6 +18,7 @@ import com.elcompose.keepfitworkout.screens.HomeScreen
 import com.elcompose.keepfitworkout.ui.theme.KeepFitWorkoutTheme
 import com.elcompose.keepfitworkout.util.Workout
 import com.elcompose.keepfitworkout.util.WorkoutState
+import com.elcompose.keepfitworkout.util.getExerciseNames
 
 import com.elcompose.keepfitworkout.util.getWorkouts
 
@@ -35,7 +36,7 @@ class MainActivity : ComponentActivity() {
                 val onStartWorkout = { workout: Workout ->
                     currentWorkout = workout
                     exercising = true
-                    exerciseModel.setCurrentWorkout(workout)
+                    exerciseModel.changeCurrentWorkout(workout)
                 }
                 val onExerciseOver = {
                     exercising = false
@@ -61,7 +62,9 @@ class MainActivity : ComponentActivity() {
                         backHandler = {
                             exercising = false
                             exerciseModel.resetWorkout()
-                        }
+                        },
+                        exerciseNameList = exerciseModel.readCurrentWorkout().getExerciseNames(),
+                        currentExerciseName = exerciseName.value ?: ""
                     )
                 } else {
                     HomeScreen(workouts = workouts, onStartWorkout = onStartWorkout)

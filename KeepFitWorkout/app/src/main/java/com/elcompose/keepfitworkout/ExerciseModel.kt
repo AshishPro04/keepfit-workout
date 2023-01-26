@@ -23,6 +23,9 @@ class ExerciseModel : ViewModel() {
     private val _currentExerciseName: MutableLiveData<String> = MutableLiveData()
     val currentExerciseName: LiveData<String> = _currentExerciseName
 
+    private val _nextExerciseName: MutableLiveData<String> = MutableLiveData()
+    val nextExerciseName: LiveData<String> = _nextExerciseName
+
     private var currentExercise: Exercise? = null
     private var currentWorkout: Workout = Workout("Dummy", R.drawable.play_icon, listOf())
 
@@ -37,10 +40,13 @@ class ExerciseModel : ViewModel() {
         _remainingTime.value = duration
     }
 
-    fun setCurrentWorkout(workout: Workout) {
+    fun changeCurrentWorkout(workout: Workout) {
         currentWorkout = workout
         setCurrentExercise(currentWorkout.exercises.firstOrNull())
         currentIndex = 0
+    }
+    fun readCurrentWorkout(): Workout {
+        return currentWorkout
     }
 
     private fun setCurrentExercise(exercise: Exercise?) {

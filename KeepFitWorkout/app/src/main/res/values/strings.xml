@@ -17,13 +17,14 @@
     <string name="push_up_with_rotation_left">Push Up with Rotation (left side)</string>
     <string name="push_up_with_rotation_right">Push Up with Rotation (right side)</string>
     <string name="lunges">Linges</string>
+    <string name="super_man">Super man</string>
+    <string name="mountain_climbs">Mountain climbs</string>
     <string name="duration_label">Duration: %1$s</string>
+    <string name="next_workout_label">Next workout</string>
     <string name="start_workout">Start Workout</string>
     <string name="stop_workout">Stop Workout</string>
     <string name="resume_workout">Resume Workout</string>
     <string name="pause_workout">Pause Workout</string>
     <string name="finish_workout">Finish Workout</string>
     <string name="leg_raises">Leg raises</string>
-    <string name="super_man">Super man</string>
-    <string name="mountain_climbs">Mountain climbs</string>
 </resources>

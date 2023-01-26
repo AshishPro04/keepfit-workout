@@ -14,6 +14,12 @@ data class Workout(val name:String, @DrawableRes val id: Int, val exercises: Lis
     }
 }
 
+fun Workout.getExerciseNames(): List<String>{
+    return this.exercises.map {
+        exercise ->  exercise.name
+    }
+}
+
 
 fun getWorkouts(context: Context): List<Workout> {
     context.run {
