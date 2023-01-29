@@ -26,6 +26,12 @@ class ExerciseModel : ViewModel() {
     private val _nextExerciseName: MutableLiveData<String> = MutableLiveData()
     val nextExerciseName: LiveData<String> = _nextExerciseName
 
+    private val _exercisedTime: MutableLiveData<String> = MutableLiveData("0s")
+    val exercisedTime:LiveData<String> = _exercisedTime
+
+    private var totalWorkoutTime: String = "0:0 s"
+
+
     private var currentExercise: Exercise? = null
     private var currentWorkout: Workout = Workout("Dummy", R.drawable.play_icon, listOf())
 
@@ -44,6 +50,7 @@ class ExerciseModel : ViewModel() {
         currentWorkout = workout
         setCurrentExercise(currentWorkout.exercises.firstOrNull())
         currentIndex = 0
+        totalWorkoutTime = currentWorkout.getDuration().toString()
     }
     fun readCurrentWorkout(): Workout {
         return currentWorkout
@@ -60,12 +67,13 @@ class ExerciseModel : ViewModel() {
             viewModelScope.launch {
                 _workoutState.value = WorkoutState.STARTED
                 while (workoutState.value != WorkoutState.STOPPED && workoutState.value != WorkoutState.PAUSED) {
-                    while (workoutState.value == WorkoutState.STARTED && (_remainingTime.value
-                            ?: 0) > 0
+                    while (
+                        workoutState.value == WorkoutState.STARTED &&
+                        (_remainingTime.value ?: 0) > 0
                     ) {
                         _remainingTime.value = ((_remainingTime.value ?: 1) - 1)
                         delay(1000)
-                        if ((_remainingTime.value ?: 0) == 0) {
+                        if ((_remainingTime.value ?: 0) == 0 && workoutState.value == WorkoutState.STARTED) {
                             _workoutState.value = WorkoutState.ENDED
                         }
                     }
@@ -95,13 +103,17 @@ class ExerciseModel : ViewModel() {
         }
     }
 
-    fun pauseWorkout() {
+    private fun pauseWorkout() {
         _workoutState.postValue(WorkoutState.PAUSED)
     }
 
-    fun stopWorkout() {
+    private fun stopWorkout() {
         _workoutState.value = WorkoutState.STOPPED
         _remainingTime.value = workoutDuration
+    }
+
+    fun restartExercise() {
+        _remainingTime.value = currentExercise?.duration ?: 0
     }
 
     fun resetWorkout() {

@@ -13,7 +13,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.elcompose.keepfitworkout.screens.ExerciseScreen
+import com.elcompose.keepfitworkout.screens.exercisescreen.ExerciseScreen
 import com.elcompose.keepfitworkout.screens.HomeScreen
 import com.elcompose.keepfitworkout.ui.theme.KeepFitWorkoutTheme
 import com.elcompose.keepfitworkout.util.Workout
@@ -38,6 +38,9 @@ class MainActivity : ComponentActivity() {
                     exercising = true
                     exerciseModel.changeCurrentWorkout(workout)
                 }
+                val onRestartExercise = {
+                    exerciseModel.restartExercise()
+                }
                 val onExerciseOver = {
                     exercising = false
                 }
@@ -59,6 +62,7 @@ class MainActivity : ComponentActivity() {
                             exercising = false
                             exerciseModel.resetWorkout()
                         },
+                        restartButtonListener = onRestartExercise,
                         backHandler = {
                             exercising = false
                             exerciseModel.resetWorkout()
