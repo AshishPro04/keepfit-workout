@@ -50,13 +50,15 @@ class MainActivity : ComponentActivity() {
                 val currentWorkoutState =  exerciseModel.workoutState.observeAsState()
                 val remainingTime = exerciseModel.remainingTime.observeAsState()
                 val exerciseName = exerciseModel.currentExerciseName.observeAsState()
+                val workedOutTime = exerciseModel.exercisedTime.observeAsState()
 
                 if (exercising) {
                     ExerciseScreen(
+                        workoutName = exerciseModel.readCurrentWorkout().name,
                         exerciseName = exerciseName.value ?: "Workout Error",
                         timeRemains = remainingTime.value ?: 0,
                         playButtonListener = videoPlay,
-                        totalDuration = exerciseModel.getTotalWorkoutDuration(),
+                        exerciseDuration = exerciseModel.getTotalExerciseDuration(),
                         workoutState = currentWorkoutState.value ?: WorkoutState.STOPPED,
                         finishButtonListener = {
                             exercising = false
@@ -68,7 +70,11 @@ class MainActivity : ComponentActivity() {
                             exerciseModel.resetWorkout()
                         },
                         exerciseNameList = exerciseModel.readCurrentWorkout().getExerciseNames(),
-                        currentExerciseName = exerciseName.value ?: ""
+                        currentExerciseName = exerciseName.value ?: "",
+                        workedOutTime = workedOutTime.value ?: 0,
+                        totalWorkoutTime = exerciseModel
+                            .readCurrentWorkout()
+                            .getDuration()
                     )
                 } else {
                     HomeScreen(workouts = workouts, onStartWorkout = onStartWorkout)

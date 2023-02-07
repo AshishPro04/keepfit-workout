@@ -16,7 +16,14 @@ class SimpleTime(var hour: Int, var min: Int, var sec: Int ) {
             return SimpleTime(hour, min, sec)
         }
     }
+    fun getSeconds(): Int {
+        return (hour * 3600) + (min * 60) + sec
+    }
     override fun toString(): String {
-        return if (hour != 0) "$hour: $min: $sec" else "$min: $sec"
+        return if (hour != 0){
+            String.format("%1$02d: %2$02d: %3$02d", hour, min, sec )
+        } else {
+            String.format("%1$02d: %2$02d", min, sec )
+        }
     }
 }
