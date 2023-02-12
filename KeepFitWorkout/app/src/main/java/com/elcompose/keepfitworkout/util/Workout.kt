@@ -29,10 +29,11 @@ fun getWorkouts(context: Context): List<Workout> {
         val crunches = Exercise(getString(R.string.crunches), 30, 10)
         val stepUps = Exercise(getString(R.string.step_ups), 30, 10)
         val squats = Exercise(getString(R.string.squats), 30, 10)
-        val tricepDips = Exercise(getString(R.string.tricep_dips), 30, 10)
+        val tricepsDips = Exercise(getString(R.string.tricep_dips), 30, 10)
         val plank = Exercise(getString(R.string.plank), 30, 1)
         val runningInPlace = Exercise(getString(R.string.running_in_place), 30, 1)
         val lunges = Exercise(getString(R.string.lunges), 30, 10)
+        val reverseCrunches = Exercise(getString(R.string.reverse_crunches), 30, 10)
         val pushUpWithRotationRight = Exercise(
             getString(R.string.push_up_with_rotation_right),
             30,
@@ -54,6 +55,60 @@ fun getWorkouts(context: Context): List<Workout> {
             1
         )
 
+        val legRaises = Exercise(
+            getString(R.string.leg_raises),
+            30,
+            10
+        )
+
+        val squatToObliqueCrunches = Exercise(
+            getString(R.string.squat_to_oblique_crunches),
+            30,
+            10
+        )
+
+        val calfRaises = Exercise(
+            getString(R.string.calf_raises),
+            30,
+            10
+        )
+
+        val diamondPushUps = Exercise(
+            getString(R.string.diamond_push_ups),
+            30,
+            10
+        )
+
+        val declinePushups = Exercise(
+            getString(R.string.decline_push_ups),
+            30,
+            10
+        )
+
+        val plankToPushUps = Exercise(
+            getString(R.string.plank_to_push_up),
+            30,
+            10
+        )
+
+        val isometricHolds = Exercise(
+            getString(R.string.isometric_holds),
+            30,
+            10
+        )
+
+        val dips = Exercise(
+            getString(R.string.dips),
+            30,
+            10
+        )
+
+        val inclinePushUps= Exercise(
+            getString(R.string.incline_push_ups),
+            30,
+            10
+        )
+
         val sevenMinuteWorkout = Workout(
             getString(R.string.seven_minute),
             R.drawable.sevenminutelogo,
@@ -64,7 +119,7 @@ fun getWorkouts(context: Context): List<Workout> {
                 crunches,
                 stepUps,
                 squats,
-                tricepDips,
+                tricepsDips,
                 plank,
                 runningInPlace,
                 lunges,
@@ -79,9 +134,53 @@ fun getWorkouts(context: Context): List<Workout> {
             getString(R.string.abs_workout),
             R.drawable.blue_creature_abs_workout,
             listOf(
-                crunches
+                crunches,
+                plank,
+                legRaises,
+                reverseCrunches
             )
         )
-        return listOf(sevenMinuteWorkout, absWorkout)
+        val legsWorkout = Workout(
+            getString(R.string.legs_workout),
+            R.drawable.leg_workout,
+            listOf(
+                squats,
+                lunges,
+                stepUps,
+                squatToObliqueCrunches,
+                calfRaises
+            )
+        )
+
+        val armsWorkout = Workout(
+            getString(R.string.arms_workout),
+            R.drawable.cute_blue_arms_workout,
+            listOf(
+                pushUp,
+                diamondPushUps,
+                tricepsDips,
+                plankToPushUps,
+                isometricHolds
+            )
+        )
+
+        val chestWorkout = Workout(
+            getString(R.string.chest_workout),
+            R.drawable.chest_workout,
+            listOf(
+                pushUp,
+                declinePushups,
+                dips,
+                inclinePushUps,
+                isometricHolds
+            )
+        )
+        return listOf(
+            sevenMinuteWorkout,
+            absWorkout,
+            chestWorkout,
+            legsWorkout,
+            armsWorkout
+        )
     }
 }

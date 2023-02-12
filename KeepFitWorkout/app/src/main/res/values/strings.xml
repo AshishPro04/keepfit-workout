@@ -29,4 +29,16 @@
     <string name="finish_workout">Finish Workout</string>
     <string name="restart_exercise">Restart Exercise</string>
     <string name="leg_raises">Leg raises</string>
+    <string name="reverse_crunches">Reverse Crunches</string>
+    <string name="squat_to_oblique_crunches">Squat to Oblique Crunch</string>
+    <string name="diamond_push_ups">Diamond Push-Ups</string>
+    <string name="plank_to_push_up">Plank to Push-Up:</string>
+    <string name="decline_push_ups">Decline Push-Ups</string>
+    <string name="isometric_holds">Isometric Holds</string>
+    <string name="dips">Dips</string>
+    <string name="incline_push_ups">Incline Push-Ups</string>
+    <string name="calf_raises">Calf Raises</string>
+    <string name="legs_workout">Leg Workout</string>
+    <string name="chest_workout">Chest workout</string>
+    <string name="arms_workout">Arms workout</string>
 </resources>

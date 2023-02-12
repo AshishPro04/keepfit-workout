@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import com.elcompose.keepfitworkout.R
 import com.elcompose.keepfitworkout.ui.theme.KeepFitWorkoutTheme
 import com.elcompose.keepfitworkout.util.SimpleTime
-import com.elcompose.keepfitworkout.util.Workout
 import com.elcompose.keepfitworkout.util.WorkoutState
 
 @Composable

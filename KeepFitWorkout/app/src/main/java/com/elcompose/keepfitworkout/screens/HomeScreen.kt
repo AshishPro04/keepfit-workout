@@ -53,7 +53,7 @@ fun Workout(modifier: Modifier = Modifier, workout: Workout, onStartWorkout: (Wo
         modifier = modifier,
         shadowElevation = 4.dp,
         shape = RoundedCornerShape(4.dp),
-        color = MaterialTheme.colorScheme.primaryContainer
+        color = MaterialTheme.colorScheme.secondaryContainer
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
@@ -110,7 +110,7 @@ fun SectionHeader(
         text = text,
         style = MaterialTheme.typography.headlineMedium.copy(
             shadow = Shadow(
-                color = MaterialTheme.colorScheme.secondaryContainer,
+                color = MaterialTheme.colorScheme.primaryContainer,
                 offset = Offset(0.3f, 0.2f),
                 blurRadius = 0.1f
             )
