@@ -2,6 +2,7 @@ package com.elcompose.keepfitworkout.util
 
 import android.content.Context
 import androidx.annotation.DrawableRes
+import androidx.compose.ui.res.stringResource
 import com.elcompose.keepfitworkout.R
 
 data class Workout(val name:String, @DrawableRes val id: Int, val exercises: List<Exercise>) {
@@ -34,6 +35,7 @@ fun getWorkouts(context: Context): List<Workout> {
         val runningInPlace = Exercise(getString(R.string.running_in_place), 30, 1)
         val lunges = Exercise(getString(R.string.lunges), 30, 10)
         val reverseCrunches = Exercise(getString(R.string.reverse_crunches), 30, 10)
+        val testExercise = Exercise("Test Exercise",5, 2)
         val pushUpWithRotationRight = Exercise(
             getString(R.string.push_up_with_rotation_right),
             30,
@@ -174,6 +176,11 @@ fun getWorkouts(context: Context): List<Workout> {
                 inclinePushUps,
                 isometricHolds
             )
+        )
+        val testWorkout = Workout(
+            "TEST",
+            R.drawable.chest_workout,
+            listOf(testExercise)
         )
         return listOf(
             sevenMinuteWorkout,

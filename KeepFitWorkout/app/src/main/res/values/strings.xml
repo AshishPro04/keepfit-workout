@@ -41,4 +41,5 @@
     <string name="legs_workout">Leg Workout</string>
     <string name="chest_workout">Chest workout</string>
     <string name="arms_workout">Arms workout</string>
+    <string name="workout_completed">Workout Completed</string>
 </resources>

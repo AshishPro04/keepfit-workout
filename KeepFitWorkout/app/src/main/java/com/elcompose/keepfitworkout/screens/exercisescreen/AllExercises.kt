@@ -14,33 +14,36 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.elcompose.keepfitworkout.util.WorkoutState
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun AllExercises(exercises: List<String>, currentExerciseName: String) {
-    Surface (
-        modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
-        shadowElevation = 2.dp,
-        tonalElevation = 2.dp,
-        shape = RoundedCornerShape(4.dp)
-    ){
-        val scrollState = rememberLazyListState()
-        val scope = rememberCoroutineScope()
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
-            state = scrollState
-        ) {
-            itemsIndexed(exercises){ index, exercise ->
-                SingleExerciseInList(
-                    exercise = exercise,
-                    currentExercise = currentExerciseName,
-                    onExerciseChanged = {
-                        scope.launch {
-                            scrollState.animateScrollToItem(index, scrollOffset = -2)
+fun AllExercises(exercises: List<String>, currentExerciseName: String, workoutState: WorkoutState) {
+    AnimatedVisibility(visible = workoutState != WorkoutState.FINISHED) {
+        Surface (
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+            shadowElevation = 2.dp,
+            tonalElevation = 2.dp,
+            shape = RoundedCornerShape(4.dp)
+        ){
+            val scrollState = rememberLazyListState()
+            val scope = rememberCoroutineScope()
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+                state = scrollState
+            ) {
+                itemsIndexed(exercises){ index, exercise ->
+                    SingleExerciseInList(
+                        exercise = exercise,
+                        currentExercise = currentExerciseName,
+                        onExerciseChanged = {
+                            scope.launch {
+                                scrollState.animateScrollToItem(index, scrollOffset = -2)
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }

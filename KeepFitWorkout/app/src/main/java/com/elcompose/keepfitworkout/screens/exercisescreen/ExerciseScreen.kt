@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,7 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,45 +58,85 @@ fun ExerciseTimer(
         shadowElevation = 2.dp,
         shape = RoundedCornerShape(8.dp),
     ) {
-        Column() {
-            ProgressIndicator(progress)
-            ExerciseName(exerciseName = exerciseName)
-            FullWidthSurfacePrimary(
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .padding(all = 8.dp)
-                        .fillMaxWidth(1f)
-                        .height(IntrinsicSize.Max),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceAround
+        AnimatedVisibility (workoutState != WorkoutState.FINISHED) {
+            Column() {
+                ProgressIndicator(progress)
+                ExerciseName(exerciseName = exerciseName)
+                FullWidthSurfacePrimary(
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+                    shape = RoundedCornerShape(8.dp)
                 ) {
-                    Column(
+                    Row(
                         modifier = Modifier
-                            .padding(8.dp)
-                            .width(IntrinsicSize.Max)
-                            .fillMaxHeight(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceAround
+                            .padding(all = 8.dp)
+                            .fillMaxWidth(1f)
+                            .height(IntrinsicSize.Max),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceAround
                     ) {
-                        RemainingTime(timeLeft)
-                        Divider()
-                        ExerciseTime(totalTime = totalDuration)
-                    }
-                    Column(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .width(IntrinsicSize.Max),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        PlayButton(onPlayPause, workoutState)
-                        FinishButton(onFinishWorkout)
-                        RestartButton(onRestartExercise = onRestartExercise)
+                        Column(
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .width(IntrinsicSize.Max)
+                                .fillMaxHeight(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceAround
+                        ) {
+                            RemainingTime(timeLeft)
+                            Divider()
+                            ExerciseTime(totalTime = totalDuration)
+                        }
+                        Column(
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .width(IntrinsicSize.Max),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            PlayButton(onPlayPause, workoutState)
+                            FinishButton(onFinishWorkout)
+                            RestartButton(onRestartExercise = onRestartExercise)
+                        }
                     }
                 }
             }
+        }
+        AnimatedVisibility(visible = workoutState == WorkoutState.FINISHED) {
+            WorkoutCompleted(
+                modifier = Modifier
+                    .padding(all = 8.dp)
+                    .fillMaxWidth(1f)
+                    .fillMaxHeight(1f),
+                onFinishWorkout = onFinishWorkout
+            )
+        }
+    }
+}
+
+@Composable
+fun WorkoutCompleted(
+    modifier: Modifier = Modifier,
+    onFinishWorkout: () -> Unit
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        val innerComponentModifier =  Modifier.padding(vertical = 16.dp, horizontal = 8.dp)
+        Text(
+            modifier =innerComponentModifier,
+            text = stringResource(id = R.string.workout_completed),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Button(
+            modifier = innerComponentModifier,
+            onClick = onFinishWorkout
+        ) {
+            Text(
+                text = stringResource(id = R.string.finish_workout),
+                modifier = innerComponentModifier
+            )
         }
     }
 }
@@ -268,7 +311,7 @@ fun ExerciseScreen(
     exerciseNameList: List<String>,
     currentExerciseName: String,
     workedOutTime: Int,
-    totalWorkoutTime: SimpleTime
+    totalWorkoutTime: SimpleTime,
 ) {
     BackHandler {
         backHandler()
@@ -280,7 +323,12 @@ fun ExerciseScreen(
                 workedOutTime = SimpleTime.getTimeFromSeconds(workedOutTime),
                 totalTime = totalWorkoutTime
             )
-            AllExercises(exercises = exerciseNameList, currentExerciseName = currentExerciseName)
+            Spacer(modifier = Modifier.height(10.dp))
+            AllExercises(
+                exercises = exerciseNameList,
+                currentExerciseName = currentExerciseName,
+                workoutState = workoutState
+            )
             ExerciseTimer(
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
                 timeLeft = timeRemains,

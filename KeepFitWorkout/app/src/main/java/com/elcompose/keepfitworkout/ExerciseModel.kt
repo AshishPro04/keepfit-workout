@@ -73,7 +73,11 @@ class ExerciseModel : ViewModel() {
         synchronized(lock) {
             viewModelScope.launch {
                 _workoutState.value = WorkoutState.STARTED
-                while (workoutState.value != WorkoutState.STOPPED && workoutState.value != WorkoutState.PAUSED) {
+                while (
+                    workoutState.value != WorkoutState.STOPPED &&
+                    workoutState.value != WorkoutState.PAUSED &&
+                    workoutState.value != WorkoutState.FINISHED
+                ) {
                     while (
                         workoutState.value == WorkoutState.STARTED &&
                         (_remainingTime.value ?: 0) > 0
@@ -98,6 +102,7 @@ class ExerciseModel : ViewModel() {
                         if (nextExercise == null) {
                             //TODO: Stop and Finish Workout here
                             stopWorkout()
+                            _workoutState.value = WorkoutState.FINISHED
                         } else {
                             totalTimeExercised += timeExercised
                             setCurrentExercise(nextExercise)
@@ -125,6 +130,7 @@ class ExerciseModel : ViewModel() {
     private fun stopWorkout() {
         _workoutState.value = WorkoutState.STOPPED
         _remainingTime.value = exerciseDuration
+        _exercisedTime.value = 0
     }
 
     fun restartExercise() {
