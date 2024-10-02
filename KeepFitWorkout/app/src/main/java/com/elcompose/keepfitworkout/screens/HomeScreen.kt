@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.elcompose.keepfitworkout.R
 import com.elcompose.keepfitworkout.ui.theme.KeepFitWorkoutTheme
 import com.elcompose.keepfitworkout.util.Workout
+import kotlinx.serialization.Serializable
 
 @Composable
 fun AppTitle(modifier: Modifier = Modifier) {
@@ -139,7 +140,8 @@ fun WorkoutList(
         }
     }
 }
-
+@Serializable
+object HomeScreen
 @Composable
 fun HomeScreen(workouts: List<Workout>, onStartWorkout: (Workout) -> Unit) {
     Surface(

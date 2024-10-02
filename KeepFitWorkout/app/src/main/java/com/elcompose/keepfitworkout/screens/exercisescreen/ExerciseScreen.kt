@@ -20,7 +20,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,6 +27,7 @@ import com.elcompose.keepfitworkout.R
 import com.elcompose.keepfitworkout.ui.theme.KeepFitWorkoutTheme
 import com.elcompose.keepfitworkout.util.SimpleTime
 import com.elcompose.keepfitworkout.util.WorkoutState
+import kotlinx.serialization.Serializable
 
 @Composable
 fun WorkoutTitle(modifier: Modifier = Modifier, exercise: String) {
@@ -276,6 +276,9 @@ fun PlayButtonContents(workoutState: WorkoutState) {
             WorkoutState.STOPPED -> {
                 PlayButtonContent(iconId = R.drawable.play_icon, stringId = R.string.start_workout)
             }
+            else -> {
+                PlayButtonContent(iconId = R.drawable.play_icon, stringId = R.string.start_workout)
+            }
         }
 
     }
@@ -296,6 +299,9 @@ fun PlayButtonContent(@DrawableRes iconId: Int, @StringRes stringId: Int) {
         textAlign = TextAlign.Center
     )
 }
+
+@Serializable
+object ExerciseScreen
 
 @Composable
 fun ExerciseScreen(

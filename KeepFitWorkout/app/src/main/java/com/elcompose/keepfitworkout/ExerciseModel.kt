@@ -1,34 +1,37 @@
 package com.elcompose.keepfitworkout
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elcompose.keepfitworkout.util.Exercise
-import com.elcompose.keepfitworkout.util.SimpleTime
+
 import com.elcompose.keepfitworkout.util.Workout
 import com.elcompose.keepfitworkout.util.WorkoutState
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ExerciseModel : ViewModel() {
     private val lock = Any()
     private var exerciseDuration: Int = 0
 
-    private val _remainingTime: MutableLiveData<Int> = MutableLiveData()
-    val remainingTime: LiveData<Int> = _remainingTime
+    private val _remainingTime: MutableStateFlow<Int> = MutableStateFlow(0)
+    val remainingTime: StateFlow<Int> = _remainingTime.asStateFlow()
 
-    private val _workoutState: MutableLiveData<WorkoutState> = MutableLiveData()
-    val workoutState: LiveData<WorkoutState> = _workoutState
+    private val _workoutState: MutableStateFlow<WorkoutState> =
+        MutableStateFlow(WorkoutState.FINISHED)
+    val workoutState: StateFlow<WorkoutState> = _workoutState.asStateFlow()
 
-    private val _currentExerciseName: MutableLiveData<String> = MutableLiveData()
-    val currentExerciseName: LiveData<String> = _currentExerciseName
+    private val _currentExerciseName: MutableStateFlow<String> = MutableStateFlow("")
+    val currentExerciseName: StateFlow<String> = _currentExerciseName.asStateFlow()
 
-    private val _nextExerciseName: MutableLiveData<String> = MutableLiveData()
-    val nextExerciseName: LiveData<String> = _nextExerciseName
+    private val _nextExerciseName: MutableStateFlow<String> = MutableStateFlow("")
+    val nextExerciseName: StateFlow<String> = _nextExerciseName.asStateFlow()
 
-    private val _exercisedTime: MutableLiveData<Int> = MutableLiveData(0)
-    val exercisedTime:LiveData<Int> = _exercisedTime
+    private val _exercisedTime: MutableStateFlow<Int> = MutableStateFlow(0)
+    val exercisedTime: StateFlow<Int> = _exercisedTime.asStateFlow()
 
     private var totalTimeExercised: Int = 0
 
@@ -58,6 +61,7 @@ class ExerciseModel : ViewModel() {
         currentIndex = 0
         totalWorkoutTime = currentWorkout.getDuration().getSeconds()
     }
+
     fun readCurrentWorkout(): Workout {
         return currentWorkout
     }
@@ -65,7 +69,7 @@ class ExerciseModel : ViewModel() {
     private fun setCurrentExercise(exercise: Exercise?) {
         currentExercise = exercise
         setDuration(exercise?.duration ?: 0)
-        _currentExerciseName.value = currentExercise?.name
+        _currentExerciseName.value = currentExercise?.name ?: ""
     }
 
 
@@ -80,14 +84,14 @@ class ExerciseModel : ViewModel() {
                 ) {
                     while (
                         workoutState.value == WorkoutState.STARTED &&
-                        (_remainingTime.value ?: 0) > 0
+                        (_remainingTime.value) > 0
                     ) {
                         delay(1000)
                         _remainingTime.value = ((_remainingTime.value ?: 1) - 1)
                         timeExercised++
                         _exercisedTime.value = totalTimeExercised + timeExercised
                         if (
-                            (_remainingTime.value ?: 0) == 0 &&
+                            (_remainingTime.value) == 0 &&
                             workoutState.value == WorkoutState.STARTED
                         ) {
                             _workoutState.value = WorkoutState.ENDED
@@ -124,11 +128,15 @@ class ExerciseModel : ViewModel() {
     }
 
     private fun pauseWorkout() {
-        _workoutState.postValue(WorkoutState.PAUSED)
+        _workoutState.update {
+            WorkoutState.PAUSED
+        }
     }
 
     private fun stopWorkout() {
-        _workoutState.value = WorkoutState.STOPPED
+        _workoutState.update {
+            WorkoutState.STOPPED
+        }
         _remainingTime.value = exerciseDuration
         _exercisedTime.value = 0
     }
